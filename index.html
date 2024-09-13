@@ -31,15 +31,6 @@
     .visible {
       display: block;
     }
-    .instrument-note {
-      margin: 10px 0;
-    }
-    .instrument-note h3 {
-      margin: 0;
-    }
-    .instrument-note p {
-      margin: 5px 0;
-    }
     #tuner {
       border: 2px solid #fff;
       padding: 20px;
@@ -49,6 +40,7 @@
       margin-top: 10px;
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pitchfinder/3.1.2/pitchfinder.min.js"></script>
 </head>
 <body>
   <header>
@@ -139,6 +131,7 @@
     let analyser;
     let microphone;
     let javascriptNode;
+    let pitchFinder;
 
     function startTuner() {
       if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -155,18 +148,16 @@
           analyser.connect(javascriptNode);
           javascriptNode.connect(audioContext.destination);
 
+          // Initialize Pitchfinder
+          pitchFinder = Pitchfinder.YIN();
+
           javascriptNode.onaudioprocess = function() {
-            let buffer = new Uint8Array(analyser.frequencyBinCount);
-            analyser.getByteFrequencyData(buffer);
+            const buffer = new Float32Array(analyser.frequencyBinCount);
+            analyser.getFloatTimeDomainData(buffer);
 
-            let sum = 0;
-            for (let i = 0; i < buffer.length; i++) {
-              sum += buffer[i];
-            }
+            const pitch = pitchFinder(buffer);
+            const note = pitch ? pitch.note : 'No note detected';
 
-            let average = sum / buffer.length;
-
-            const note = detectNote(average);
             document.getElementById('noteDisplay').textContent = 'Note: ' + note;
           };
         }).catch(function(err) {
@@ -175,18 +166,6 @@
       } else {
         alert('getUserMedia not supported on your browser!');
       }
-    }
-
-    function detectNote(average) {
-      if (average < 50) return 'No sound detected';
-      // Basic note detection (for demo purposes)
-      if (average < 100) return 'C';
-      if (average < 150) return 'D';
-      if (average < 200) return 'E';
-      if (average < 250) return 'F';
-      if (average < 300) return 'G';
-      if (average < 350) return 'A';
-      return 'B';
     }
   </script>
 </body>
