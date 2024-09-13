@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watuga Middle School Band</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #333;
+      padding: 10px;
+      text-align: center;
+    }
+    nav a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+    main {
+      padding: 20px;
+    }
+    #tuner {
+      border: 2px solid #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .hidden {
+      display: none;
+    }
+    .visible {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Watuga Middle School Band</h1>
+    <nav>
+      <a href="#" onclick="showSection('home')">Home</a>
+      <a href="#" onclick="showSection('tuner')">Tuner</a>
+      <a href="#" onclick="showSection('practice')">Practice</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="home" class="visible">
+      <h2>Welcome!</h2>
+      <p>This is the band practice website. Use the navigation above to access the Tuner or Practice sections.</p>
+    </div>
+
+    <div id="tuner" class="hidden">
+      <h2>Instrument Tuner</h2>
+      <div id="tunerInterface">
+        <p>Use this tuner to check your pitch.</p>
+        <!-- Tuner functionality will be integrated here -->
+      </div>
+    </div>
+
+    <div id="practice" class="hidden">
+      <h2>Practice Area</h2>
+      <p>Access practice materials and Star Wars themes here.</p>
+      <!-- Practice materials and Star Wars themes will be added here -->
+    </div>
+  </main>
+
+  <script>
+    function showSection(sectionId) {
+      // Hide all sections
+      document.querySelectorAll('main > div').forEach(div => div.classList.add('hidden'));
+
+      // Show the selected section
+      document.getElementById(sectionId).classList.remove('hidden');
+    }
+
+    // Basic Tuner Example
+    window.onload = function() {
+      const tuner = document.getElementById('tunerInterface');
+
+      // Simple example: create a basic pitch detection function (to be improved)
+      tuner.innerHTML += '<p id="note">Detecting note...</p>';
+
+      // Note: This is a placeholder; real tuner logic requires audio processing
+    };
+  </script>
+</body>
+</html>
